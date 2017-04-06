@@ -6,7 +6,7 @@ Servidor LEMP PHP 5.6 com Docker
 Com este script você conseguirá criar um servidor LEMP no Docker.
 O Script fará todas as instalações e as configurações necessárias para o servidor funcionar, bem simples e fácil, basta saber um pouco de Docker.
 
-Para clonar os arquivos digite: git clone https://github.com/eniomarcelo/docker-lemp
+Para clonar os arquivos digite: git clone https://github.com/EnioMarcelo/Docker-Lemp-PHP-5.6.git
 
 Para me encontrar no Docker Hub procure por ebuzaneli.
 
