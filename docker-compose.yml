@@ -1,0 +1,85 @@
+version: '2'
+
+services:
+   web:
+     image: ebuzaneli/nginx-php5.6 
+     hostname: buzza-server-nginx
+     container_name: buzza-server-nginx
+     ports: 
+       - "8080:80"
+     volumes:
+       - $PWD/www:/var/www/html
+       - $PWD/php/php.ini:/etc/php/5.6/fpm/php.ini
+     environment:
+       - TZ=America/Campo_Grande
+     links:
+       - db
+     restart: always
+     depends_on:
+       - db
+     networks:
+        buzza-lemp-network:
+           ipv4_address: 10.5.0.7
+
+   db:
+      image: ebuzaneli/buzza-server-mysql:5.6
+      hostname: buzza-server-mysql
+      container_name: buzza-server-mysql
+      ports:
+         - "3307:3306"
+      volumes:
+         - $PWD/mysql-data:/var/lib/mysql
+      environment:
+         - MYSQL_ROOT_PASSWORD=123456
+         - MYSQL_DATABASE=db_buzza
+         - TZ=America/Campo_Grande
+      restart: always
+      networks:
+         buzza-lemp-network:
+            ipv4_address: 10.5.0.6
+
+   phpmyadmin:
+      image: ebuzaneli/buzza-phpmyadmin:latest 
+      hostname: buzza-server-phpmyadmin
+      container_name: buzza-server-phpmyadmin
+      links:
+         - db
+      environment:
+         PMA_HOST: db
+         PMA_PORT: 3306
+      ports:
+         - '8082:80' 
+      restart: always
+      depends_on:
+         - db
+      networks:
+         buzza-lemp-network:
+            ipv4_address: 10.5.0.5
+
+
+   ssh:
+      image: ebuzaneli/buzza-server-ssh:latest 
+      hostname: buzza-server-ssh
+      container_name: buzza-server-ssh
+      environment:
+         - "SSH_USER=buzza"
+         - "SSH_PASSWORD=102030" 
+         - TZ=America/Campo_Grande
+      volumes:
+         - $PWD/www:/var/www/html
+      ports:
+         - '2222:22'
+      restart: always
+      networks:
+         buzza-lemp-network:
+            ipv4_address: 10.5.0.4
+
+
+
+networks:
+  buzza-lemp-network:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1      
