@@ -20,3 +20,6 @@ ebuzaneli/buzza-phpmyadmin - > Php my Admin
 ebuzaneli/buzza-server-mysql -> Servidor de BD Mysql - 5.6
 
 ebuzaneli/buzza-server-ssh -> Servidor SSH
+
+
+Autor: Enio Marcelo Buzaneli - Email: eniomarcelo@gmail.com
