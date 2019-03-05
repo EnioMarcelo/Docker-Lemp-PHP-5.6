@@ -2,14 +2,14 @@ version: '2'
 
 services:
    web:
-     image: ebuzaneli/nginx-php5.6 
+     image: ebuzaneli/nginx-php5.6
      hostname: buzza-server-nginx
      container_name: buzza-server-nginx
      ports: 
-       - "8080:80"
+       - "9090:80"
      volumes:
-       - $PWD/www:/var/www/html
-       - $PWD/php/php.ini:/etc/php/5.6/fpm/php.ini
+       - /Users/eniomarcelobuzaneli/Documents/Docker/Docker-Lemp-PHP-5.6/www:/var/www/html
+       - /Users/eniomarcelobuzaneli/Documents/Docker/Docker-Lemp-PHP-5.6/php/php.ini:/etc/php/5.6/fpm/php.ini
      environment:
        - TZ=America/Campo_Grande
      links:
@@ -18,8 +18,7 @@ services:
      depends_on:
        - db
      networks:
-        buzza-lemp-network:
-           ipv4_address: 10.5.0.7
+        - buzza-lemp-network
 
    db:
       image: ebuzaneli/buzza-server-mysql:5.6
@@ -28,15 +27,14 @@ services:
       ports:
          - "3307:3306"
       volumes:
-         - $PWD/mysql-data:/var/lib/mysql
+         - /Users/eniomarcelobuzaneli/Documents/Docker/Docker-Lemp-PHP-5.6/mysql-data:/var/lib/mysql
       environment:
          - MYSQL_ROOT_PASSWORD=123456
          - MYSQL_DATABASE=db_buzza
          - TZ=America/Campo_Grande
       restart: always
       networks:
-         buzza-lemp-network:
-            ipv4_address: 10.5.0.6
+        - buzza-lemp-network
 
    phpmyadmin:
       image: ebuzaneli/buzza-phpmyadmin:latest 
@@ -48,13 +46,12 @@ services:
          PMA_HOST: db
          PMA_PORT: 3306
       ports:
-         - '8082:80' 
+         - '9091:80' 
       restart: always
       depends_on:
          - db
       networks:
-         buzza-lemp-network:
-            ipv4_address: 10.5.0.5
+        - buzza-lemp-network
 
 
    ssh:
@@ -66,20 +63,15 @@ services:
          - "SSH_PASSWORD=102030" 
          - TZ=America/Campo_Grande
       volumes:
-         - $PWD/www:/var/www/html
+         - /Users/eniomarcelobuzaneli/Documents/Docker/Docker-Lemp-PHP-5.6/www:/var/www/html
       ports:
          - '2222:22'
       restart: always
       networks:
-         buzza-lemp-network:
-            ipv4_address: 10.5.0.4
+        - buzza-lemp-network
 
 
 
 networks:
   buzza-lemp-network:
     driver: bridge
-    ipam:
-     config:
-       - subnet: 10.5.0.0/16
-         gateway: 10.5.0.1      
